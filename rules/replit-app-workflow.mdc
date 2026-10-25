@@ -1,0 +1,29 @@
+---
+description: Safely create, update, and publish Replit apps using the Replit MCP tools.
+alwaysApply: true
+---
+
+# Replit app workflow
+
+Use the Replit MCP tools for Replit app operations. Keep the user informed about which app the tools will affect.
+
+## Find and verify the app before editing
+
+- Before calling `update_app_using_prompt` or `publish_app`, identify the target app with `resolve_app_by_name`, `search_apps`, or `list_apps`.
+- Prefer `resolve_app_by_name` when the user gives an exact app name. Use `search_apps` for a partial name, URL, or other clue; use `list_apps` when the user asks to choose from their apps.
+- Check the returned app details, such as its name and URL, against the user's request. Do not infer that a similarly named app is the right one.
+- If the lookup returns no match, multiple plausible matches, or insufficient detail to distinguish the target, ask the user which app they mean. Do not edit or publish until the target is unambiguous.
+- Before making an update, state the selected app's name and identifying URL or other available detail. If the identity is not clear from the lookup, resolve that uncertainty with the user first.
+- For a new app, use `create_app_from_prompt` with the user's requested purpose and requirements. Ask a focused question first only when a missing decision materially affects what should be built.
+
+## Update
+
+- Once the target app is identified, send `update_app_using_prompt` a concise description of the requested changes and relevant constraints.
+- Do not claim an update is complete unless the tool reports success. Summarize the result and any follow-up needed.
+
+## Publish
+
+- Publishing makes the app publicly available or updates its live version. Identify the app first as described above.
+- Before every `publish_app` call, tell the user which app will be published and ask for explicit confirmation to publish it. This confirmation step is required even when the user requested publishing earlier in the conversation. Wait for a clear yes before calling the tool.
+- If the app identity changes, obtain confirmation for the newly identified app before publishing it.
+- After confirmed publishing, use `get_publish_status` when needed to check completion and retrieve the live URL. Report the status accurately.

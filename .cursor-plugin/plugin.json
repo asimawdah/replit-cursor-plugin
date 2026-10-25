@@ -1,7 +1,7 @@
 {
   "name": "replit",
   "displayName": "Replit",
-  "description": "Build, update, and publish Replit apps from Cursor / Grok Bot.",
+  "description": "Build, update, and publish Replit apps from Cursor / Grok Bot with clear app selection and publishing confirmation.",
   "version": "0.1.0",
   "license": "MIT",
   "author": { "name": "Replit" },

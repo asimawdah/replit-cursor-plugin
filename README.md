@@ -37,19 +37,21 @@ Under the hood, the plugin connects the client to Replit's **MCP server** (MCP =
 
 ## Project layout
 
-This is an MCP-only **Cursor Plugin**. It configures the existing Replit MCP server; it does not bundle rules, skills, commands, or a logo.
+This is a **Cursor Plugin**. It configures the existing Replit MCP server and includes a Cursor rule that guides safe app creation, app selection before changes, and explicit confirmation before publishing.
 
 ```
 replit-cursor-plugin/
 ├── .cursor-plugin/
 │   └── plugin.json          # The plugin's ID card: name, version, description
 ├── mcp.json                 # Tells Cursor how to reach Replit's MCP server
+├── rules/
+│   └── replit-app-workflow.mdc # App selection, update, and publishing guidance
 ├── README.md
 ├── LICENSE                  # MIT license for this plugin package
 └── architecture.md          # Diagram of how the pieces connect
 ```
 
-Cursor discovers the MCP server configuration from the root `mcp.json`.
+Cursor discovers the MCP server configuration from the root `mcp.json` and automatically loads `.mdc` rules from `rules/`.
 
 ---
 
@@ -85,7 +87,7 @@ Then in Cursor:
 3. Authenticate the Replit MCP server when prompted. Sign in to Replit, choose the workspace you want to connect, and review the requested access.
 4. In the agent chat, try: *"List my Replit apps."* Confirm that the tool succeeds and returns apps you can edit (or an empty list if there are none).
 
-The plugin connects to `https://mcp.replit.com/server/mcp` using Streamable HTTP and OAuth protected-resource discovery. No API keys or custom authentication headers belong in the plugin files.
+The plugin connects to `https://mcp.replit.com/server/mcp` using Streamable HTTP and OAuth protected-resource discovery. No API keys or custom authentication headers belong in the plugin files. Its bundled rule instructs the agent to identify the requested app before editing, resolve ambiguous matches with you, and get confirmation immediately before publishing.
 
 After any edit, reload the window again to pick up changes.
 
@@ -102,6 +104,7 @@ Once the plugin files are merged and publicly available, submit the repository l
 ## Useful links
 
 - [Cursor plugin docs](https://cursor.com/docs/plugins)
+- [Cursor plugin reference: rules and component discovery](https://cursor.com/docs/reference/plugins)
 - [Cursor MCP docs](https://cursor.com/docs/mcp)
 - [Replit MCP server docs](https://docs.replit.com/platforms/mcp-server)
 
